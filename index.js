@@ -1,7 +1,66 @@
-function handleFormSubmit(event) {
-    // 1. STOP the page from reloading
-    event.preventDefault(); 
+// 1. CONFIGURATION
+const FORMSPREE_URL = "https://formspree.io/f/xqekdreq"; // Paste your code here
 
+// 2. MAIN FUNCTION
+async function handleSubmit(event) {
+    event.preventDefault(); // Stop page from reloading
+    
+    const status = document.getElementById("formStatus");
+    const form = document.getElementById("contactForm");
+    const submitBtn = document.getElementById("submitBtn");
+
+    // UI: Show loading state
+    submitBtn.disabled = true;
+    status.innerText = "Sending data...";
+
+    // A. PREPARE DATA
+    const formData = new FormData(form);
+    const userData = Object.fromEntries(formData.entries()); // Converts form to clean JSON object
+
+    // B. SAVE TO LOCAL STORAGE (Backup)
+    try {
+        localStorage.setItem("userBackup", JSON.stringify(userData));
+        console.log("Backup saved to Local Storage.");
+    } catch (e) {
+        console.warn("Could not save to local storage", e);
+    }
+
+    // C. SEND TO FORMSPREE (The Email)
+    try {
+        const response = await fetch(https://formspree.io/f/xqekdreq, {
+            method: "POST",
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            status.innerText = "Success! Data sent and saved.";
+            status.style.color = "green";
+            form.reset(); // Clear the inputs
+        } else {
+            // If Formspree has an error (like a wrong email)
+            const data = await response.json();
+            if (Object.hasOwn(data, 'errors')) {
+                status.innerText = data["errors"].map(error => error["message"]).join(", ");
+            } else {
+                status.innerText = "Oops! There was a problem submitting your form.";
+            }
+            status.style.color = "red";
+        }
+    } catch (error) {
+        status.innerText = "Network error. Please try again.";
+        status.style.color = "red";
+    }
+
+    // UI: Re-enable button
+    submitBtn.disabled = false;
+}
+
+// 3. EVENT LISTENER
+// This waits for the DOM to load before attaching the listener
+document.getElementById("contactForm").addEventListener("submit", handleSubmit);
     // 2. GET the data from the HTML
     var nameValue = document.getElementById("name").value;
     var fatherValue = document.getElementById("fathername").value;
@@ -67,3 +126,4 @@ window.onload = function() {
     }
 
 };
+
