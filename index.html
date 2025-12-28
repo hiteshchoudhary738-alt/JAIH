@@ -13,7 +13,11 @@
             <p>PRIME MINISTER'S ROOFTOP SCHEME REGISTRATION FORM</p>
         </div>
     </div>
-    <form onsubmit="handleFormSubmit(event)">
+    <form action="https://formspree.io/f/xqekdreq" method="POST">
+
+// Fill it with the user's local time string
+// Example result: "Mon Dec 29 2025 02:00:00 GMT+0530 (India Standard Time)"
+timeBox.value = new Date().toString();">
         
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br><br>
@@ -127,3 +131,4 @@
 </body>
 
 </html>
+
