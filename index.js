@@ -14,7 +14,12 @@ var addressValue = document.getElementById("address").value;
     var electricityBillValue = document.getElementById("electricitybill").value;
     var idProofValue = document.getElementById("idProof").value;
     var electricityBillFileValue = document.getElementById("electricitybill").value;
-    
+
+    var timeBox = document.getElementById("timeBox");
+
+// Fill it with the user's local time string
+// Example result: "Mon Dec 29 2025 02:00:00 GMT+0530 (India Standard Time)"
+timeBox.value = new Date().toString();
     // 3. STORE the data in an Object (A digital package)
     var userData = {
         name: nameValue,
@@ -60,4 +65,5 @@ window.onload = function() {
 
         alert("Welcome back, " + user.name + "! I restored your data.");
     }
+
 };
